@@ -12,6 +12,7 @@ function AirflowLines() {
   return (
     <svg
       viewBox="0 0 240 120"
+      preserveAspectRatio="none"
       fill="none"
       className="absolute inset-x-0 bottom-0 h-24 w-full text-gold-400/40"
       aria-hidden="true"
@@ -45,7 +46,7 @@ export function Hero() {
             variants={fadeUp}
             className="inline-flex items-center gap-2 rounded-full border border-forest-900/10 bg-white/60 py-1.5 pr-4 pl-1.5 text-sm font-medium"
           >
-            <span className="rounded-full bg-forest-900 px-2.5 py-0.5 text-xs font-semibold text-gold-400">
+            <span className="shrink-0 rounded-full bg-forest-900 px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap text-gold-400">
               {company.yearsInBusiness}+ yrs
             </span>
             Certified duct & HVAC cleaning
@@ -53,7 +54,7 @@ export function Hero() {
 
           <motion.h1
             variants={fadeUp}
-            className="mt-6 text-[2.75rem] leading-[0.98] font-bold sm:text-6xl xl:text-7xl"
+            className="mt-6 text-[clamp(2.25rem,11vw,2.75rem)] leading-[0.98] font-bold sm:text-6xl xl:text-7xl"
           >
             Cleaner ducts.
             <br />
@@ -133,9 +134,12 @@ export function Hero() {
           </motion.dl>
         </motion.div>
 
-        <div ref={mediaRef} className="grid grid-cols-2 gap-3 sm:gap-4">
+        <div
+          ref={mediaRef}
+          className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-2"
+        >
           <motion.figure
-            className="relative col-span-2 aspect-[16/10] overflow-hidden rounded-card bg-forest-800"
+            className="relative col-span-2 aspect-[16/10] overflow-hidden rounded-card bg-forest-800 sm:row-span-2 sm:aspect-auto sm:min-h-80 lg:row-span-1 lg:aspect-[16/10] lg:min-h-0"
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, ease: easeOut }}

@@ -31,7 +31,7 @@ function Field({ label, htmlFor, className, children }) {
   )
 }
 
-export function QuoteForm() {
+export function QuoteForm({ service, onServiceChange }) {
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
   const [firstName, setFirstName] = useState('')
 
@@ -186,7 +186,8 @@ export function QuoteForm() {
                       <select
                         id="service"
                         name="service"
-                        defaultValue={services[0].title}
+                        value={service}
+                        onChange={(event) => onServiceChange(event.target.value)}
                         className={cn(fieldClass, 'appearance-none pr-10')}
                       >
                         {services.map((service) => (

@@ -19,7 +19,7 @@ export function MobileActionBar() {
           exit={{ y: '100%' }}
           transition={{ duration: 0.35, ease: easeOut }}
         >
-          <div className="grid grid-cols-[auto_1fr] gap-2">
+          <div className="mx-auto grid max-w-md grid-cols-[auto_1fr] gap-2">
             <Button href={company.phoneHref} variant="outline" aria-label={`Call ${company.phone}`}>
               <Phone className="size-4" aria-hidden="true" />
               Call

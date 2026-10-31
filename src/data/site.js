@@ -56,49 +56,102 @@ export const warningSigns = [
   'Pets shed and the filter clogs fast',
 ]
 
+// `image` is optional: services without a photo render a branded placeholder panel.
 export const services = [
   {
     id: 'air-ducts',
     title: 'Air Duct Cleaning',
+    tagline: 'Our most booked service',
     blurb:
-      'Full supply and return system cleaned under negative pressure, so the debris leaves your home instead of moving around it.',
-    image: '/images/flex-duct-vacuum.png',
+      'Your full supply and return system cleaned under negative pressure, so the debris leaves your home instead of moving around it.',
+    includes: [
+      'Every supply and return vent, register by register',
+      'HEPA negative-pressure vacuum and rotary brushes',
+      'Before & after camera footage',
+    ],
+    duration: '2–4 hours',
+    bestFor: 'Allergies, pets, dusty homes',
+    image: { src: '/images/flex-duct-vacuum.png', alt: 'Technician vacuuming a flexible air duct' },
     icon: Wind,
-    featured: true,
   },
   {
     id: 'hvac-coil',
     title: 'HVAC & Coil Cleaning',
+    tagline: 'Lower energy bills',
     blurb:
-      'Clogged coils make your system work harder for less air. We clear them so it runs cooler and cheaper.',
-    image: '/images/coil-cleaning.png',
+      'Clogged coils make your system work harder for less air. We clear them so it runs cooler, quieter and cheaper.',
+    includes: [
+      'Evaporator coil and blower wheel cleaning',
+      'Drain pan flush and treatment',
+      'Filter check and replacement advice',
+    ],
+    duration: '1–2 hours',
+    bestFor: 'Weak airflow, high bills',
+    image: { src: '/images/coil-cleaning.png', alt: 'Technician spray-cleaning an HVAC coil' },
     icon: Fan,
-  },
-  {
-    id: 'commercial',
-    title: 'Commercial Ductwork',
-    blurb:
-      'Offices, retail and restaurants. Scheduled around your hours with minimal disruption to staff and customers.',
-    image: '/images/commercial-trunk-line.png',
-    icon: Building2,
   },
   {
     id: 'dryer-vent',
     title: 'Dryer Vent Cleaning',
+    tagline: 'Fire prevention',
     blurb:
       'Skipped vent cleaning is the top cause of dryer fires. Faster, cheaper drying loads are a bonus.',
+    includes: [
+      'Full vent run cleared from dryer to exterior',
+      'Lint trap housing and exterior flap cleaned',
+      'Airflow test after cleaning',
+    ],
+    duration: '45–60 minutes',
+    bestFor: 'Long dry cycles, hot dryer',
     icon: Flame,
+  },
+  {
+    id: 'commercial',
+    title: 'Commercial Ductwork',
+    tagline: 'After-hours scheduling',
+    blurb:
+      'Offices, retail units and restaurants. Scheduled around your hours with minimal disruption to staff and customers.',
+    includes: [
+      'Site survey and fixed written quote',
+      'Trunk lines, branches and air handlers',
+      'Documentation for landlords and inspectors',
+    ],
+    duration: 'Quoted per site',
+    bestFor: 'Offices, retail, restaurants',
+    image: {
+      src: '/images/commercial-trunk-line.png',
+      alt: 'Technician in protective gear brushing a large commercial duct',
+    },
+    icon: Building2,
   },
   {
     id: 'mold',
     title: 'Eco Mold Treatment',
-    blurb: 'Plant-based treatments that stop mold growth in the system without harsh fumes.',
+    tagline: 'Plant-based, non-toxic',
+    blurb:
+      'Plant-based treatments that stop mold growth inside the system without harsh chemicals or lingering fumes.',
+    includes: [
+      'Inspection of coils, pans and duct interiors',
+      'Botanical, non-toxic antimicrobial treatment',
+      'Moisture source guidance',
+    ],
+    duration: '1–3 hours',
+    bestFor: 'Musty smells, humid climates',
     icon: Leaf,
   },
   {
     id: 'sanitize',
     title: 'Sanitize & Deodorize',
-    blurb: 'Neutralises pet, smoke and cooking odours at the source, not just the vents.',
+    tagline: 'Fresh-smelling air',
+    blurb:
+      'Neutralises pet, smoke and cooking odours at the source inside the ductwork, not just at the vents.',
+    includes: [
+      'Fogged sanitiser through the whole system',
+      'Odour neutraliser, not a masking scent',
+      'Safe for kids and pets once dry',
+    ],
+    duration: 'Add-on, ~30 minutes',
+    bestFor: 'Pets, smokers, new homes',
     icon: Sparkles,
   },
 ]

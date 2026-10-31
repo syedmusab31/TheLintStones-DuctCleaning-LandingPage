@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { MotionConfig } from 'framer-motion'
+import { services } from './data/site'
 import { AnnouncementBar } from './components/layout/AnnouncementBar'
 import { Header } from './components/layout/Header'
 import { Footer } from './components/layout/Footer'
@@ -15,6 +17,10 @@ import { Faq } from './sections/Faq'
 import { QuoteForm } from './sections/QuoteForm'
 
 export default function App() {
+  // Shared so picking a service in the showcase pre-fills the quote form.
+  const [activeService, setActiveService] = useState(0)
+  const [requestedService, setRequestedService] = useState(services[0].title)
+
   return (
     <MotionConfig reducedMotion="user">
       <a
@@ -29,13 +35,17 @@ export default function App() {
         <Hero />
         <TrustMarquee />
         <WarningSigns />
-        <Services />
+        <Services
+          activeIndex={activeService}
+          onActiveChange={setActiveService}
+          onBook={setRequestedService}
+        />
         <WhyUs />
         <Process />
         <Pricing />
         <Testimonials />
         <Faq />
-        <QuoteForm />
+        <QuoteForm service={requestedService} onServiceChange={setRequestedService} />
       </main>
       <Footer />
       <MobileActionBar />
