@@ -1,4 +1,4 @@
-# TheLintstones — Duct Cleaning
+# TheLintstones Duct Cleaning
 
 Marketing and lead-generation site for **TheLintstones Duct Cleaning**, an air duct, dryer vent and HVAC cleaning company serving homes and businesses.
 
