@@ -1,214 +1,205 @@
-import { useId, useRef } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, Check, Clock, Sparkle } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ArrowUpRight, Check, Clock } from 'lucide-react'
 import { services } from '../data/site'
-import { easeOut } from '../lib/motion'
+import { fadeUp, inView, stagger } from '../lib/motion'
 import { cn } from '../lib/cn'
-import { Button } from '../components/ui/Button'
 import { Reveal } from '../components/ui/Reveal'
 import { SectionHeading } from '../components/ui/SectionHeading'
-import { ServiceImage } from '../components/ui/ServiceImage'
+import {
+  CoilArt,
+  CommercialArt,
+  DryerArt,
+  DuctArt,
+  MoldArt,
+  SanitizeArt,
+} from '../components/visuals/ServiceArt'
 
-function useRovingTabs(count, activeIndex, onChange) {
-  const refs = useRef([])
-
-  function onKeyDown(event) {
-    const keys = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }
-    let next
-    if (event.key in keys) next = (activeIndex + keys[event.key] + count) % count
-    else if (event.key === 'Home') next = 0
-    else if (event.key === 'End') next = count - 1
-    else return
-
-    event.preventDefault()
-    onChange(next)
-    refs.current[next]?.focus()
-  }
-
-  return { refs, onKeyDown }
+const art = {
+  'air-ducts': DuctArt,
+  'hvac-coil': CoilArt,
+  'dryer-vent': DryerArt,
+  commercial: CommercialArt,
+  mold: MoldArt,
+  sanitize: SanitizeArt,
 }
 
-function ServicePanel({ service, panelId, tabId, onBook }) {
+// Bento placement and colourway per service, keyed by id so the data stays layout-free.
+const layout = {
+  'air-ducts': { span: 'sm:col-span-2 lg:col-span-4', tone: 'dark', size: 'lg' },
+  'hvac-coil': { span: 'lg:col-span-2', tone: 'light' },
+  'dryer-vent': { span: 'lg:col-span-2', tone: 'light' },
+  mold: { span: 'lg:col-span-3', tone: 'light' },
+  sanitize: { span: 'lg:col-span-3', tone: 'light' },
+  commercial: { span: 'sm:col-span-2 lg:col-span-6', tone: 'gold', size: 'wide' },
+}
+
+const tones = {
+  dark: 'bg-forest-900 text-cream [--spot:rgb(246_196_55/0.16)]',
+  light: 'bg-white text-forest-900 border border-line [--spot:rgb(39_90_63/0.08)]',
+  gold: 'bg-gold-400 text-forest-900 [--spot:rgb(255_255_255/0.35)]',
+}
+
+function trackSpotlight(event) {
+  const rect = event.currentTarget.getBoundingClientRect()
+  event.currentTarget.style.setProperty('--x', `${event.clientX - rect.left}px`)
+  event.currentTarget.style.setProperty('--y', `${event.clientY - rect.top}px`)
+}
+
+function ServiceCard({ service, onBook }) {
+  const { span, tone, size } = layout[service.id]
+  const Art = art[service.id]
+  const dark = tone === 'dark'
+  const muted = dark ? 'text-cream/65' : 'text-forest-900/65'
+
   return (
-    <motion.div
-      key={service.id}
-      id={panelId}
-      role="tabpanel"
-      aria-labelledby={tabId}
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.4, ease: easeOut }}
-      className="flex h-full flex-col overflow-hidden rounded-card border border-line bg-white"
+    <motion.article
+      variants={fadeUp}
+      onPointerMove={trackSpotlight}
+      className={cn(
+        'group relative isolate flex flex-col overflow-hidden rounded-card spotlight p-6 transition-shadow duration-500 hover:shadow-[0_30px_60px_-30px_rgb(12_26_19/0.45)] sm:p-8',
+        tones[tone],
+        span,
+        size === 'lg' && 'lg:row-span-2',
+        size === 'wide' && 'lg:grid lg:grid-cols-[1.2fr_1fr_auto] lg:items-center lg:gap-10',
+      )}
     >
-      <div className="relative aspect-[16/10] overflow-hidden bg-forest-800 sm:aspect-[16/9]">
-        <motion.div
-          className="absolute inset-0"
-          initial={{ scale: 1.06 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.2, ease: easeOut }}
+      <Art
+        className={cn(
+          'w-full transition-transform duration-700 ease-out-soft group-hover:scale-[1.04]',
+          size === 'lg'
+            ? 'order-2 mx-auto mt-10 max-w-xl lg:mt-auto lg:pt-6 [&_*]:[vector-effect:non-scaling-stroke]'
+            : 'h-36',
+          size === 'wide' && 'lg:order-2 lg:h-40',
+          dark ? 'text-cream/80' : 'text-forest-800',
+        )}
+      />
+
+      <div
+        className={cn(
+          'flex flex-1 flex-col',
+          size !== 'wide' && size !== 'lg' && 'mt-6',
+          size === 'lg' && 'order-1 flex-none',
+          size === 'wide' && 'mt-6 lg:mt-0',
+        )}
+      >
+        <div>
+          <p
+            className={cn(
+              'text-xs font-semibold tracking-[0.16em] uppercase',
+              dark ? 'text-gold-400' : 'text-forest-600',
+              tone === 'gold' && 'text-forest-900/70',
+            )}
+          >
+            {service.tagline}
+          </p>
+          <h3
+            className={cn(
+              'mt-3 leading-[1.05] font-semibold',
+              size === 'lg' ? 'text-4xl sm:text-5xl' : 'text-2xl',
+              size === 'wide' && 'sm:text-4xl',
+            )}
+          >
+            {service.title}
+          </h3>
+          <p className={cn('mt-3 leading-relaxed', muted)}>{service.blurb}</p>
+
+          {size === 'lg' && (
+            <ul className="mt-6 grid gap-2.5 sm:grid-cols-2 sm:gap-x-6">
+              {service.includes.map((item) => (
+                <li key={item} className="flex items-start gap-3 text-cream/85">
+                  <Check className="mt-0.5 size-4 shrink-0 text-gold-400" aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div
+          className={cn(
+            'mt-8 flex items-center justify-between gap-4',
+            size === 'wide' && 'lg:hidden',
+          )}
         >
-          <ServiceImage image={service.image} icon={service.icon} className="size-full" />
-        </motion.div>
-        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-cream/95 px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur">
-          <Sparkle className="size-3.5 text-gold-600" fill="currentColor" aria-hidden="true" />
-          {service.tagline}
-        </span>
+          <span className={cn('inline-flex items-center gap-1.5 text-sm', muted)}>
+            <Clock className="size-4" aria-hidden="true" />
+            {service.duration}
+          </span>
+          <BookLink service={service} onBook={onBook} tone={tone} />
+        </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-6 sm:p-8">
-        <h3 className="text-2xl font-semibold sm:text-3xl">{service.title}</h3>
-        <p className="mt-3 leading-relaxed text-stone-ink">{service.blurb}</p>
-
-        <ul className="mt-6 grid gap-2.5">
-          {service.includes.map((item) => (
-            <li key={item} className="flex items-start gap-3">
-              <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-forest-100 text-forest-700">
-                <Check className="size-3" strokeWidth={3} aria-hidden="true" />
-              </span>
-              {item}
-            </li>
-          ))}
-        </ul>
-
-        <dl className="mt-6 grid grid-cols-2 gap-4 border-t border-line pt-6 text-sm">
-          <div>
-            <dt className="text-stone-ink">Typical time</dt>
-            <dd className="mt-1 flex items-center gap-1.5 font-semibold">
-              <Clock className="size-4 text-forest-600" aria-hidden="true" />
-              {service.duration}
-            </dd>
-          </div>
-          <div>
-            <dt className="text-stone-ink">Best for</dt>
-            <dd className="mt-1 font-semibold">{service.bestFor}</dd>
-          </div>
-        </dl>
-
-        <Button
-          href="#quote"
-          variant="dark"
-          className="mt-8 self-start"
-          onClick={() => onBook(service.title)}
-        >
-          Book {service.title.toLowerCase()}
-          <ArrowRight
-            className="size-4 transition-transform group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
-        </Button>
-      </div>
-    </motion.div>
+      {size === 'wide' && (
+        <div className="hidden lg:order-3 lg:block">
+          <BookLink service={service} onBook={onBook} tone={tone} large />
+        </div>
+      )}
+    </motion.article>
   )
 }
 
-export function Services({ activeIndex, onActiveChange, onBook }) {
-  const baseId = useId()
-  const { refs, onKeyDown } = useRovingTabs(services.length, activeIndex, onActiveChange)
-  const active = services[activeIndex]
-
-  const tabId = (i) => `${baseId}-tab-${i}`
-  const panelId = `${baseId}-panel`
-
+function BookLink({ service, onBook, tone, large }) {
   return (
-    <section id="services" className="bg-sand/60 py-24 lg:py-32">
+    <a
+      href="#quote"
+      onClick={() => onBook(service.title)}
+      className={cn(
+        'relative z-10 inline-flex shrink-0 items-center gap-2 rounded-full font-semibold transition-colors',
+        large ? 'h-14 px-7' : 'h-11 pr-2 pl-4 text-sm',
+        tone === 'dark' && 'bg-gold-400 text-forest-900 hover:bg-gold-300',
+        tone === 'light' && 'bg-forest-900 text-cream hover:bg-forest-700',
+        tone === 'gold' && 'bg-forest-900 text-cream hover:bg-forest-700',
+      )}
+      aria-label={`Book ${service.title}`}
+    >
+      Book
+      <span
+        className={cn(
+          'grid size-7 place-items-center rounded-full transition-transform duration-300 group-hover:rotate-45',
+          tone === 'dark' ? 'bg-forest-900 text-gold-400' : 'bg-gold-400 text-forest-900',
+        )}
+      >
+        <ArrowUpRight className="size-4" aria-hidden="true" />
+      </span>
+    </a>
+  )
+}
+
+export function Services({ onBook }) {
+  return (
+    <section id="services" className="py-24 lg:py-36">
       <div className="container-page">
         <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
-          <SectionHeading eyebrow="Services" title="Everything that moves air through your home." />
+          <SectionHeading
+            eyebrow="Services"
+            title={
+              <>
+                Everything that moves air through your{' '}
+                <span className="font-serif font-normal italic">home.</span>
+              </>
+            }
+          />
           <Reveal
             as="p"
             delay={0.1}
-            className="max-w-lg text-lg leading-relaxed text-stone-ink lg:justify-self-end lg:pb-1"
+            className="max-w-md text-lg leading-relaxed text-stone-ink lg:justify-self-end lg:pb-2"
           >
-            One crew, one visit. From a single dryer vent to a full commercial system, every job
-            comes with camera proof and a price you approve first.
+            One crew, one visit. Every job comes with camera proof and a price you approve before we
+            start.
           </Reveal>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-8">
-          <Reveal className="min-w-0 lg:sticky lg:top-28 lg:self-start">
-            <div
-              role="tablist"
-              aria-label="Our services"
-              onKeyDown={onKeyDown}
-              className="-mx-4 flex snap-x [scrollbar-width:none] gap-2 overflow-x-auto px-4 pb-1 sm:-mx-6 sm:px-6 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
-            >
-              {services.map((service, i) => {
-                const selected = i === activeIndex
-                const Icon = service.icon
-
-                return (
-                  <button
-                    key={service.id}
-                    ref={(node) => (refs.current[i] = node)}
-                    id={tabId(i)}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    aria-controls={panelId}
-                    tabIndex={selected ? 0 : -1}
-                    onClick={() => onActiveChange(i)}
-                    className={cn(
-                      'group relative flex shrink-0 snap-start items-center gap-4 rounded-2xl text-left transition-colors duration-300',
-                      'px-4 py-3 lg:px-5 lg:py-5',
-                      selected ? 'text-cream' : 'bg-white/60 hover:bg-white',
-                    )}
-                  >
-                    {selected && (
-                      <motion.span
-                        layoutId={`${baseId}-active`}
-                        className="absolute inset-0 rounded-2xl bg-forest-900"
-                        transition={{ type: 'spring', stiffness: 380, damping: 34 }}
-                      />
-                    )}
-                    <span
-                      className={cn(
-                        'relative grid size-10 shrink-0 place-items-center rounded-xl transition-colors lg:size-11',
-                        selected ? 'bg-gold-400 text-forest-900' : 'bg-forest-100 text-forest-700',
-                      )}
-                    >
-                      <Icon className="size-5" aria-hidden="true" />
-                    </span>
-                    <span className="relative min-w-0 flex-1">
-                      <span className="block font-display font-semibold whitespace-nowrap lg:text-lg">
-                        {service.title}
-                      </span>
-                      <span
-                        className={cn(
-                          'mt-0.5 hidden text-sm lg:block',
-                          selected ? 'text-forest-100/70' : 'text-stone-ink',
-                        )}
-                      >
-                        {service.tagline}
-                      </span>
-                    </span>
-                    <ArrowRight
-                      className={cn(
-                        'relative hidden size-5 shrink-0 transition-all duration-300 lg:block',
-                        selected
-                          ? 'text-gold-400'
-                          : '-translate-x-2 text-forest-900/30 opacity-0 group-hover:translate-x-0 group-hover:opacity-100',
-                      )}
-                      aria-hidden="true"
-                    />
-                  </button>
-                )
-              })}
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.1} className="grid min-w-0">
-            <AnimatePresence mode="wait" initial={false}>
-              <ServicePanel
-                key={active.id}
-                service={active}
-                panelId={panelId}
-                tabId={tabId(activeIndex)}
-                onBook={onBook}
-              />
-            </AnimatePresence>
-          </Reveal>
-        </div>
+        <motion.div
+          className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-6"
+          variants={stagger(0.08)}
+          initial="hidden"
+          whileInView="show"
+          viewport={inView}
+        >
+          {services.map((service) => (
+            <ServiceCard key={service.id} service={service} onBook={onBook} />
+          ))}
+        </motion.div>
       </div>
     </section>
   )

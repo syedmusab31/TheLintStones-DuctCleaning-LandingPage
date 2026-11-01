@@ -6,12 +6,25 @@ Built with React, Tailwind CSS v4 and Framer Motion on Vite.
 
 ## Highlights
 
-- Conversion-focused single page: hero offer, warning-sign checklist, services, process, flat-rate pricing, reviews, FAQ and a quote form
-- Brand palette taken from the logo and uniform: forest green, mustard gold and a warm sand neutral
-- Scroll-triggered reveals, a scroll-linked process timeline and a parallax hero, all respecting `prefers-reduced-motion`
-- Sticky call / book bar on mobile once the hero CTAs leave the screen
-- Accessible by default: skip link, semantic landmarks, labelled form fields, keyboard-friendly accordion and menu
-- Copy, services, FAQs and contact details live in one file, `src/data/site.js`
+- **Interactive duct fly-through** — a procedural Canvas 2D scene in the hero renders a dusty and a cleaned duct side by side. Drag (or use the arrow keys) to compare. It pauses off-screen and respects `prefers-reduced-motion`.
+- **Duct health check** — tick the warning signs and an animated gauge gives a verdict and a matching call to action.
+- **Hand-drawn service illustrations** — custom SVG line art with animated airflow, in place of stock photography.
+- **Scroll storytelling** — a statement that fills in word by word as you scroll, counters, a pinned horizontal process track on desktop, parallax and a progress bar.
+- **Details** — magnetic primary buttons, cursor-following card highlights, a tear-off pricing ticket, review marquees that pause on hover, and Lenis smooth scrolling.
+- **Conversion** — flat-rate offer throughout, "Book" on any service pre-fills the quote form, sticky call/book bar on mobile.
+- **Accessible** — skip link, semantic landmarks, keyboard-operable slider, toggles, accordion and menu, `aria-live` results.
+- All copy, services, FAQs and contact details live in `src/data/site.js`.
+
+## Design system
+
+| Token   | Value                                             |
+| ------- | ------------------------------------------------- |
+| Forest  | `#12261c` → `#0c1a13` (from the uniform and logo) |
+| Gold    | `#f6c437` (from the logo lettering)               |
+| Cream   | `#f6f2e9` with a sand `#ece5d4` secondary         |
+| Display | Bricolage Grotesque                               |
+| Accent  | Instrument Serif italic                           |
+| Body    | Figtree                                           |
 
 ## Getting started
 
@@ -56,10 +69,11 @@ Payload:
 ```
 src/
 ├── components/
-│   ├── layout/      # Announcement bar, header, footer, mobile action bar
-│   └── ui/          # Button, Reveal, SectionHeading, Stars
+│   ├── layout/      # Header, footer, mobile action bar
+│   ├── ui/          # Button, Reveal, SplitReveal, CountUp, SectionHeading, Stars
+│   └── visuals/     # DuctTunnel canvas, service illustrations
 ├── data/site.js     # All copy, services, FAQs, contact details
-├── hooks/           # useScrolled, useLockBodyScroll
+├── hooks/           # useScrolled, useLockBodyScroll, useSmoothScroll
 ├── lib/             # Motion variants, lead submission, class helper
 ├── sections/        # One component per page section
 ├── App.jsx
@@ -71,7 +85,7 @@ public/              # Favicons, manifest and images
 
 - Replace the placeholder testimonials in `src/data/site.js` with real customer reviews.
 - Set `VITE_LEAD_ENDPOINT` in your hosting provider's environment variables.
-- Swap in higher-resolution job photos in `public/images/` for sharper service cards.
+- Add higher-resolution crew photos to `public/images/` for the "Why TheLintstones" section.
 
 ## Deployment
 

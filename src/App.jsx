@@ -1,24 +1,25 @@
 import { useState } from 'react'
 import { MotionConfig } from 'framer-motion'
 import { services } from './data/site'
-import { AnnouncementBar } from './components/layout/AnnouncementBar'
+import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { Header } from './components/layout/Header'
 import { Footer } from './components/layout/Footer'
 import { MobileActionBar } from './components/layout/MobileActionBar'
 import { Hero } from './sections/Hero'
 import { TrustMarquee } from './sections/TrustMarquee'
-import { WarningSigns } from './sections/WarningSigns'
+import { Problem } from './sections/Problem'
+import { Checker } from './sections/Checker'
 import { Services } from './sections/Services'
-import { WhyUs } from './sections/WhyUs'
 import { Process } from './sections/Process'
+import { WhyUs } from './sections/WhyUs'
 import { Pricing } from './sections/Pricing'
 import { Testimonials } from './sections/Testimonials'
 import { Faq } from './sections/Faq'
 import { QuoteForm } from './sections/QuoteForm'
 
 export default function App() {
-  // Shared so picking a service in the showcase pre-fills the quote form.
-  const [activeService, setActiveService] = useState(0)
+  useSmoothScroll()
+  // Lifted so "Book" on a service card pre-selects it in the quote form.
   const [requestedService, setRequestedService] = useState(services[0].title)
 
   return (
@@ -29,19 +30,15 @@ export default function App() {
       >
         Skip to content
       </a>
-      <AnnouncementBar />
       <Header />
-      <main id="main">
+      <main id="main" className="overflow-x-clip">
         <Hero />
         <TrustMarquee />
-        <WarningSigns />
-        <Services
-          activeIndex={activeService}
-          onActiveChange={setActiveService}
-          onBook={setRequestedService}
-        />
-        <WhyUs />
+        <Problem />
+        <Checker />
+        <Services onBook={setRequestedService} />
         <Process />
+        <WhyUs />
         <Pricing />
         <Testimonials />
         <Faq />

@@ -31,7 +31,7 @@ export const company = {
 
 export const navLinks = [
   { label: 'Services', href: '#services' },
-  { label: 'How it works', href: '#process' },
+  { label: 'Process', href: '#process' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Reviews', href: '#reviews' },
   { label: 'FAQ', href: '#faq' },
@@ -47,6 +47,24 @@ export const trustPoints = [
   'Pet and kid safe',
 ]
 
+export const facts = [
+  {
+    value: 40,
+    prefix: 'Up to ',
+    suffix: ' lb',
+    label:
+      'of dust a typical six-room home produces every year — much of it cycling through the ducts.',
+    source: 'NADCA',
+  },
+  {
+    value: 5,
+    prefix: '2–',
+    suffix: '×',
+    label: 'more pollutants can be found in indoor air than in the air outside.',
+    source: 'U.S. EPA',
+  },
+]
+
 export const warningSigns = [
   'Dust settles again a day or two after you clean',
   'Allergies flare up indoors, not outside',
@@ -56,7 +74,6 @@ export const warningSigns = [
   'Pets shed and the filter clogs fast',
 ]
 
-// `image` is optional: services without a photo render a branded placeholder panel.
 export const services = [
   {
     id: 'air-ducts',
@@ -71,7 +88,6 @@ export const services = [
     ],
     duration: '2–4 hours',
     bestFor: 'Allergies, pets, dusty homes',
-    image: { src: '/images/flex-duct-vacuum.png', alt: 'Technician vacuuming a flexible air duct' },
     icon: Wind,
   },
   {
@@ -87,7 +103,6 @@ export const services = [
     ],
     duration: '1–2 hours',
     bestFor: 'Weak airflow, high bills',
-    image: { src: '/images/coil-cleaning.png', alt: 'Technician spray-cleaning an HVAC coil' },
     icon: Fan,
   },
   {
@@ -104,25 +119,6 @@ export const services = [
     duration: '45–60 minutes',
     bestFor: 'Long dry cycles, hot dryer',
     icon: Flame,
-  },
-  {
-    id: 'commercial',
-    title: 'Commercial Ductwork',
-    tagline: 'After-hours scheduling',
-    blurb:
-      'Offices, retail units and restaurants. Scheduled around your hours with minimal disruption to staff and customers.',
-    includes: [
-      'Site survey and fixed written quote',
-      'Trunk lines, branches and air handlers',
-      'Documentation for landlords and inspectors',
-    ],
-    duration: 'Quoted per site',
-    bestFor: 'Offices, retail, restaurants',
-    image: {
-      src: '/images/commercial-trunk-line.png',
-      alt: 'Technician in protective gear brushing a large commercial duct',
-    },
-    icon: Building2,
   },
   {
     id: 'mold',
@@ -153,6 +149,21 @@ export const services = [
     duration: 'Add-on, ~30 minutes',
     bestFor: 'Pets, smokers, new homes',
     icon: Sparkles,
+  },
+  {
+    id: 'commercial',
+    title: 'Commercial Ductwork',
+    tagline: 'After-hours scheduling',
+    blurb:
+      'Offices, retail units and restaurants. Scheduled around your hours with minimal disruption to staff and customers.',
+    includes: [
+      'Site survey and fixed written quote',
+      'Trunk lines, branches and air handlers',
+      'Documentation for landlords and inspectors',
+    ],
+    duration: 'Quoted per site',
+    bestFor: 'Offices, retail, restaurants',
+    icon: Building2,
   },
 ]
 
@@ -230,6 +241,24 @@ export const testimonials = [
       'We had them do the whole office after hours. Zero disruption, and the stuffy smell in the back rooms is gone.',
     name: 'Priya K.',
     detail: 'Office manager',
+  },
+  {
+    quote:
+      'Our dryer was taking two cycles to dry a load. After the vent clean it’s down to one. Should have called years ago.',
+    name: 'Marcus T.',
+    detail: 'Homeowner',
+  },
+  {
+    quote:
+      'My son’s allergies were always worse at home. The difference after the cleaning was obvious within a week.',
+    name: 'Elena G.',
+    detail: 'Homeowner',
+  },
+  {
+    quote:
+      'They showed up when they said they would, explained everything, and the price didn’t change. That’s rare.',
+    name: 'Tom W.',
+    detail: 'Landlord',
   },
 ]
 
